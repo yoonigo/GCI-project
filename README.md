@@ -1,5 +1,7 @@
 # GCI-project
 
+## Setup
+
 Install Node.js (https://nodejs.org/en/)
 
 Install indepedencies by typing in the terminal : npm install express@4
