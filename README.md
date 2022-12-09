@@ -3,8 +3,7 @@
 ## Setup
 
 Install Node.js (https://nodejs.org/en/)
-
-Install indepedencies by typing in the terminal : npm install express@4
+In terminal, inside the folder: npm install express@4
 
 ## How to execute
 
