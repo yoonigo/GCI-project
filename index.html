@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drawing Relay Game</title>
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+  </head>
+  <body id="logged-out">
+    <!-- Chat -->
+    <section id="chat">
+      <ul id="messages"></ul>
+      <form id="form" action="">
+        <input id="chat_input" autocomplete="off" /><button>Send</button>
+      </form>
+    </section>
+
+    <!-- Join room with a username -->
+    <section id="login">
+      <form action="">
+        <label for="u">Username</label>
+        <input id="u" autocomplete="off" autofocus />
+        <p>
+          <button>Join</button>
+        </p>
+      </form>
+    </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/client.js"></script>
+  </body>
+</html>
