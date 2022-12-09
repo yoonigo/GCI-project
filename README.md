@@ -1,4 +1,4 @@
-# GCI-project
+# Drawing Relay Game
 
 ## Setup
 
