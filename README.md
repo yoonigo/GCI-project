@@ -2,7 +2,8 @@
 
 ## Setup
 
-Install Node.js (https://nodejs.org/en/)
+Install Node.js : https://nodejs.org/en/
+
 In terminal, inside the folder: npm install express@4
 
 ## How to execute
