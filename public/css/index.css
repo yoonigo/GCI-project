@@ -11,20 +11,16 @@ body#logged-out {
   background: rgb(223,223,223);
 }
 
-body#logged-out div#chat {
+body#logged-out div {
     filter: blur(5px);
     -webkit-filter: blur(5px);
 }
 
-body#logged-out section#scoreboard {
+body#logged-out #startBtn {
     filter: blur(5px);
     -webkit-filter: blur(5px);
 }
 
-body#logged-out section#drawing-board {
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-}
 
 body#logged-out section#login {
     opacity: 1;

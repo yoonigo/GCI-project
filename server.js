@@ -8,21 +8,24 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const cors = require('cors');
+const words = require("./words.json");
 
 // Liste des utilisateurs connectés
 var users = [];
 var padUrl= "";
+var usedWords = [];
+var order = [];
+var countUsers = 0;
+var guesser;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', async (_req, res) => {
   res.sendFile(__dirname +'/index.html');
-  //const url = "https://cors-anywhere.herokuapp.com/https://webstrates.cs.au.dk/new?prototype=pad&v=release";
   const url = "https://webstrates.cs.au.dk/new?prototype=pad&v=release";
   if (padUrl == ""){
     try {
-      console.log("here");
       const response = await fetch(url, {
         method:'GET',
         credentials: "include",
@@ -55,9 +58,11 @@ io.on('connection', (socket) => {
 
     if(user !== undefined && userIndex === -1){ // c'est ok
       console.log('user logged in : ' + user.username);
+      countUsers+=1;
       loggedUser = {
         username : user.username,
-        number : users.length + 1
+        number : countUsers,
+        role : ""
       };
       users.push(loggedUser);
       var serviceMsg = {
@@ -94,11 +99,75 @@ io.on('connection', (socket) => {
       if (index != -1){
         users.splice(index, 1);
       }
-      io.emit('user-logout', loggedUser);
+      io.emit('user-logout', [loggedUser, users]);
     }
   });
 
+  socket.on('new-round', () =>{
+    // get a new pad
+    getNewPad();
+    // pick a new word
+    randInt = Math.floor(Math.random() *words.length);
+    while (usedWords.includes(words[randInt])){
+      randInt = Math.floor(Math.random() *words.length);
+    }
+    var newWord = words[randInt];
+    usedWords.push(newWord);
+
+    // define the roles (drawers and guesser)
+    var nbUsers = users.length;
+    var randInt2 = Math.floor(Math.random() *nbUsers);
+    order = [];
+    users[randInt2].role = "guesser";
+    for (i = 0; i < nbUsers; i++){
+      if (i != randInt2){
+        users[i].role = "drawer";
+        order.push(i);
+        console.log(order);
+      }
+    }
+    // create order of drawers
+    order = shuffle(order);
+    console.log(order);
+    //start timer
+    io.emit('new-round', [newWord, users, order, padUrl]);
+  });
 });
+
+async function getNewPad(){
+    var previousPadUrl = padUrl;
+    const url = "https://webstrates.cs.au.dk/new?prototype=pad&v=release";
+    try {
+      const response = await fetch(url, {
+        method:'GET',
+        credentials: "include",
+        headers: {'Authorization': 'Basic ' + btoa('web:strate')}
+      });
+      if (padUrl == previousPadUrl)
+        padUrl = await response.url;
+      console.log("res : "+ padUrl);
+    } catch (error) {
+      console.log("Error : "+error);
+    }
+};
+
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
