@@ -1,3 +1,6 @@
+html, body, head {
+  height:100%;
+}
 body {
   margin: 0;
   padding-bottom: 3rem;
@@ -8,10 +11,21 @@ body#logged-out {
   background: rgb(223,223,223);
 }
 
-body#logged-out section#chat {
+body#logged-out div#chat {
     filter: blur(5px);
     -webkit-filter: blur(5px);
 }
+
+body#logged-out section#scoreboard {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+}
+
+body#logged-out section#drawing-board {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+}
+
 body#logged-out section#login {
     opacity: 1;
 }
@@ -47,9 +61,19 @@ section#login button {
 	margin-top: 20px;
 	cursor: pointer;
 }
-#form {
+
+#chat {
+  position : relative;
+    float: right;
+    width:40%;
+    height: 80%;
+    background-color: gray;
+    overflow: auto;
+}
+#chat form {
   background: rgba(0, 0, 0, 0.15);
-  padding: 0.25rem; position: fixed;
+  padding: 0.25rem;
+  position: position;
   bottom: 0;
   left: 0;
   right: 0;
@@ -57,7 +81,6 @@ section#login button {
   height: 3rem;
   box-sizing:
   border-box;
-  backdrop-filter: blur(10px);
 }
 
 #chat_input {
@@ -86,19 +109,61 @@ section#login button {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  padding-bottom: 50px;
+  width: 30%;
 }
 #messages > li {
   padding: 0.5rem 1rem;
 }
-
+/*
 #messages > li:nth-child(odd) {
   background: #efefef;
-}
+}*/
 
-
-section#chat #messages li span.username {
+div#chat #messages li span.username {
 	display: inline-block;
 	padding: 6px 10px;
 	margin-right: 5px;
 	color: #e67e22;
+}
+
+
+#drawing-board {
+  /*display: flex;
+  flex:2;*/
+  float: left;
+  width:100%;
+  height:100%;
+}
+
+#drawing-pad{
+  width:100%;
+  height:100%;
+}
+
+#scoreboard{
+  float: left;
+  width:50%;
+  height: 60%;
+}
+
+#drawing-pad{
+
+}
+
+li.logout{
+  color: blue;
+}
+
+li.login{
+  color: green;
+}
+
+.information{ /* à modifier */
+  display: inline-block;
+	padding: 3px 10px;
+	margin-right: 5px;
+	color: white;
+	background: #e67e22;
+	border-radius: 5px;
 }

@@ -6,11 +6,22 @@
   </head>
   <body id="logged-out">
     <!-- Chat -->
-    <section id="chat">
-      <ul id="messages"></ul>
-      <form id="form" action="">
-        <input id="chat_input" autocomplete="off" /><button>Send</button>
-      </form>
+    <div id="chat">Chat
+        <ul id="messages"></ul>
+        <form id="form" action="">
+          <input id="chat_input" autocomplete="off" /><button>Send</button>
+        </form>
+    </div>
+
+    <section id="drawing-board">Pad
+      <div id="blank" style="display:block; position:absolute; width:100%; height:100%;"></div>
+      <iframe id="drawing-pad" src="" ></iframe>
+    </section>
+
+    <section id="scoreboard">
+      <div class="column" style="background-color:#bbb">Scoreboard
+        <ul id="players"></ul>
+      </div>
     </section>
 
     <!-- Join room with a username -->
@@ -18,6 +29,7 @@
       <form action="">
         <label for="u">Username</label>
         <input id="u" autocomplete="off" autofocus />
+        <span id="alertLogin" style="display:none;">This name already exists</span>
         <p>
           <button>Join</button>
         </p>
