@@ -16,6 +16,11 @@ body#logged-out div {
     -webkit-filter: blur(5px);
 }
 
+body#logged-out section#chat {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+}
+
 body#logged-out #startBtn {
     filter: blur(5px);
     -webkit-filter: blur(5px);
@@ -116,7 +121,7 @@ section#login button {
   background: #efefef;
 }*/
 
-div#chat #messages li span.username {
+section#chat #messages li span.username {
 	display: inline-block;
 	padding: 6px 10px;
 	margin-right: 5px;

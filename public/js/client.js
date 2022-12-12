@@ -140,6 +140,13 @@ socket.on('timer', function(time) {
   timer.textContent = time.countdown;
 })
 
+socket.on('correct answer', () => {
+  // change the color of the answer in the chat
+  messages.lastChild.style.color = "orange";
+  //stop timer
+  // start a new round
+});
+
 function scrollToBottom() {
   chat.scrollTo(0, chat.scrollHeight);
 }

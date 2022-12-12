@@ -17,6 +17,8 @@ var usedWords = [];
 var order = [];
 var countUsers = 0;
 var guesser;
+var roundStarted = false;
+var newWord = "";
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -83,6 +85,19 @@ io.on('connection', (socket) => {
     msg.username = loggedUser.username;
     io.emit('chat message', msg);
     console.log('Message from : ' + loggedUser.username);
+
+    if (roundStarted){
+      console.log("roundStarted");
+      console.log("msg from : "+msg.username+ "and guesser is : "+guesser.username);
+      console.log("answer: "+msg.text.toLowerCase());
+      if (msg.username == guesser.username) {
+        if (msg.text.toLowerCase() == newWord){
+          io.emit("correct answer");
+          console.log("emitted");
+          roundStarted = false;
+        }
+      }
+    }
   });
 
   // Déconnexion d'un utilisateur
@@ -104,6 +119,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new-round', () =>{
+    roundStarted = true;
     // get a new pad
     getNewPad();
     // pick a new word
@@ -111,7 +127,7 @@ io.on('connection', (socket) => {
     while (usedWords.includes(words[randInt])){
       randInt = Math.floor(Math.random() *words.length);
     }
-    var newWord = words[randInt];
+    newWord = words[randInt];
     usedWords.push(newWord);
 
     // define the roles (drawers and guesser)
@@ -119,6 +135,7 @@ io.on('connection', (socket) => {
     var randInt2 = Math.floor(Math.random() *nbUsers);
     order = [];
     users[randInt2].role = "guesser";
+    guesser = users[randInt2];
     for (i = 0; i < nbUsers; i++){
       if (i != randInt2){
         users[i].role = "drawer";
