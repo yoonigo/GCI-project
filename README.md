@@ -8,7 +8,10 @@ Populate the dependencies property by running the command :
 ```
 npm install express@4
 ```
-Install additional library: npm install node-fetch-with-proxy
+Install additional library: 
+```
+npm install node-fetch-with-proxy
+```
 
 ## How to execute
 
