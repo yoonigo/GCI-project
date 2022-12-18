@@ -19,6 +19,7 @@ var countUsers = 0;
 var guesser;
 var roundStarted = false;
 var newWord = "";
+var turn = 0;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,12 +36,12 @@ app.get('/', async (_req, res) => {
       });
       if (padUrl == "")
         padUrl = await response.url;
-      console.log("res : "+ padUrl);
+      //console.log("res : "+ padUrl);
     } catch (error) {
-      console.log("Error : "+error);
+      //console.log("Error : "+error);
     }
   } else {
-    console.log("Existing pad : "+padUrl);
+    //console.log("Existing pad : "+padUrl);
   }
 });
 
@@ -59,7 +60,7 @@ io.on('connection', (socket) => {
     }
 
     if(user !== undefined && userIndex === -1){ // c'est ok
-      console.log('user logged in : ' + user.username);
+      //console.log('user logged in : ' + user.username);
       countUsers+=1;
       loggedUser = {
         username : user.username,
@@ -84,16 +85,18 @@ io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     msg.username = loggedUser.username;
     io.emit('chat message', msg);
-    console.log('Message from : ' + loggedUser.username);
+    //console.log('Message from : ' + loggedUser.username);
 
     if (roundStarted){
-      console.log("roundStarted");
-      console.log("msg from : "+msg.username+ "and guesser is : "+guesser.username);
-      console.log("answer: "+msg.text.toLowerCase());
+      //console.log("roundStarted");
+      //console.log("msg from : "+msg.username+ "and guesser is : "+guesser.username);
+      //console.log("answer: "+msg.text.toLowerCase());
+      //console.log("word:"+newWord);
       if (msg.username == guesser.username) {
-        if (msg.text.toLowerCase() == newWord){
-          io.emit("correct answer");
-          console.log("emitted");
+        //console.log("coucou");
+        if (msg.text.toLowerCase() == newWord.toLowerCase()){
+          //console.log("emitted");
+          io.emit('correct answer');
           roundStarted = false;
         }
       }
@@ -103,7 +106,7 @@ io.on('connection', (socket) => {
   // Déconnexion d'un utilisateur
   socket.on('disconnect', function(){
     if (loggedUser !== undefined) {
-      console.log('user disconnected : '+loggedUser.username);
+      //console.log('user disconnected : '+loggedUser.username);
       var serviceMsg = {
         text : 'User "'+loggedUser.username + '" left the room',
         type : 'logout'
@@ -119,6 +122,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new-round', () =>{
+    //console.log("new round started");
     roundStarted = true;
     // get a new pad
     getNewPad();
@@ -140,13 +144,30 @@ io.on('connection', (socket) => {
       if (i != randInt2){
         users[i].role = "drawer";
         order.push(i);
-        console.log(order);
       }
     }
     // create order of drawers
     order = shuffle(order);
-    console.log(order);
+    turn = 1;
     //start timer
+    var turnTime = 5; // 5 sec per drawer
+    var counter = turnTime*order.length; // total round time
+    var countdown = setInterval(function(){
+    io.emit('timer', counter);
+    counter--;
+    if (counter == -1) {
+      io.emit('round-end');
+      clearInterval(countdown);
+    }
+    if (counter % turnTime == 0 && counter != 0) { // turn of the next drawer
+      var nextDrawer = users[order[turn]];
+      io.emit('turn-end', nextDrawer);
+      //console.log("Timer "+counter)
+      //console.log("Turn"+nextDrawer.username);
+      turn += 1;
+    }
+    }, 1000);
+
     io.emit('new-round', [newWord, users, order, padUrl]);
   });
 });
@@ -162,30 +183,26 @@ async function getNewPad(){
       });
       if (padUrl == previousPadUrl)
         padUrl = await response.url;
-      console.log("res : "+ padUrl);
+      //console.log("res : "+ padUrl);
     } catch (error) {
-      console.log("Error : "+error);
+      //console.log("Error : "+error);
     }
 };
 
 function shuffle(array) {
   let currentIndex = array.length,  randomIndex;
-
   // While there remain elements to shuffle.
   while (currentIndex != 0) {
-
     // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-
     // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
   }
-
   return array;
 }
 
 server.listen(3000, () => {
-  console.log('listening on *:3000');
+  //console.log('listening on *:3000');
 });

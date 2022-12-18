@@ -3,7 +3,6 @@ html, body, head {
 }
 body {
   margin: 0;
-  padding-bottom: 3rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -48,7 +47,7 @@ section#login input#u {
 	font-size: 25px;
 	text-align: center;
 	padding: 5px;
-	border: 5px solid rgb(158, 158, 158);
+	border: 3px solid rgb(158, 158, 158);
 }
 section#login input#u:focus {
 	outline: none;
@@ -60,28 +59,53 @@ section#login button {
 	color: white;
 	font-size: 20px;
 	margin-top: 20px;
-	cursor: pointer;
+  font-weight: 600px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 3px #999;
+}
+
+section#login button:hover {background-color: #e67e00}
+
+section#login button:active {
+  box-shadow: 0 3px #666;
+  transform: translateY(2px);
+}
+
+
+#chat-container{
+  position : relative;
+  float: left;
+  width: 25%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: 10px;
+  border: 1px solid #c5cdd6;
+  background-color: #ecebeb;
 }
 
 #chat {
-  position : relative;
-    float: right;
-    width:40%;
-    height: 80%;
-    background-color: gray;
-    overflow: auto;
+  width:calc(97% + 4.3px);
+  height:calc(100% - 3.5rem) ;
+  background-color: #ecebeb;
+  overflow: auto;
+  overflow-x: hidden;
+  padding: 5px;
+  padding-bottom: 0px;
 }
-#chat form {
+#chat-form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
-  position: position;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
   height: 3rem;
-  box-sizing:
-  border-box;
+  width:98%;
+  background-color: #ecebeb;
 }
 
 #chat_input {
@@ -96,8 +120,8 @@ section#login button {
   outline: none;
 }
 
-#form > button {
-  background: #333;
+#chat-form > button {
+  background: #234db6;
   border: none;
   padding: 0 1rem;
   margin: 0.25rem;
@@ -110,11 +134,12 @@ section#login button {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  padding-bottom: 50px;
-  width: 30%;
+  padding-bottom: 30px;
+  width: 100%;
+  margin-right:8px;
 }
 #messages > li {
-  padding: 0.5rem 1rem;
+  padding: 5px 10px 5px 10px;
 }
 /*
 #messages > li:nth-child(odd) {
@@ -123,9 +148,8 @@ section#login button {
 
 section#chat #messages li span.username {
 	display: inline-block;
-	padding: 6px 10px;
-	margin-right: 5px;
-	color: #e67e22;
+  padding-right: 8px;
+	font-weight:bold;
 }
 
 
@@ -133,8 +157,10 @@ section#chat #messages li span.username {
   /*display: flex;
   flex:2;*/
   float: left;
-  width:100%;
-  height:100%;
+  width:52%;
+  height:80%;
+  margin-right: 25px;
+  margin-left: auto;
 }
 
 #drawing-pad{
@@ -144,27 +170,100 @@ section#chat #messages li span.username {
 
 #scoreboard{
   float: left;
-  width:50%;
-  height: 60%;
+  width: 15%;
+  height: 80%;
+  margin-left: 25px;
+  margin-right: 20px;
+  padding: 0px 15px 0 15px;
+  background-color: #ecebeb;
+  border: 1px solid #c5cdd6;
 }
 
-#drawing-pad{
-
+#players{
+  list-style-type: none;
+  padding: 0;
+  padding-bottom: 40px;
+}
+#players > li{
+  padding: 10px 10px 10px 10px;
 }
 
-li.logout{
+
+.logout{
   color: blue;
 }
 
-li.login{
+.login{
   color: green;
 }
 
 .information{ /* à modifier */
-  display: inline-block;
-	padding: 3px 10px;
-	margin-right: 5px;
-	color: white;
-	background: #e67e22;
-	border-radius: 5px;
+	color: #a9a8ad;
+}
+
+#barre{
+  top:0;
+  display:flex;
+  align-items:center;
+  padding-top:25px;
+  margin-bottom: 40px;
+}
+
+#username{
+  width: calc(15% + 15px);
+  padding: 7px 10px 7px 10px;
+  margin-left: 25px; /* 9% */
+  /*border: 2px solid gray;*/
+  background-color: #a9a8ad;
+  color:white;
+  text-align: center;
+  font-weight: bold;
+}
+
+#timer{
+  margin-left: 8%;
+  width: 15%;
+  padding:10px;
+  font-weight:bold;
+  font-size:20px;
+}
+
+#word{
+  border: 0.5px solid gray;
+  padding: 10px;
+  font-weight:bold;
+  display:none;
+}
+
+#startBtn{
+  margin-left:auto;
+  margin-right:10%;
+  background-color: #3d6ada;
+  font-size: 18px;
+  font-weight: 600px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 30px;
+  padding-right: 30px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 3px #999;
+
+}
+
+#startBtn:hover {background-color: #234db6}
+
+#startBtn:active {
+  box-shadow: 0 3px #666;
+  transform: translateY(2px);
+}
+
+.drawer{
+  float:right;
+}
+.guesser{
+  float:right;
 }
